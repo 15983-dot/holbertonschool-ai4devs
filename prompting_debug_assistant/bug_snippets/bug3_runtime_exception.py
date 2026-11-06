@@ -1,17 +1,23 @@
-def process_user_scores(user_data):
+def process_user_metrics(data_records):
     """
-    Intended Behavior: Extract score values from user list and compute average.
-    Issue Type: Runtime Exception (KeyError & ZeroDivisionError).
+    Computes ratio of completed tasks to total assigned tasks per user.
     """
-    total_score = 0
-    count = 0
+    results = {}
+    for user_id, metrics in data_records.items():
+        total_tasks = metrics.get("total", 0)
+        completed_tasks = metrics.get("completed", 0)
+        
+        # Bug: Raises ZeroDivisionError if total is 0, and fails to handle string inputs
+        completion_rate = completed_tasks / total_tasks
+        results[user_id] = round(completion_rate * 100, 2)
+        
+    return results
 
-    for user in user_data:
-        total_score += user['score']
-        count += 1
 
-    average = total_score / count
-    return average
-
-users = [{"name": "Alice"}, {"name": "Bob", "score": 85}]
-print("Average Score:", process_user_scores(users))
+if __name__ == "__main__":
+    users = {
+        "user_101": {"completed": 8, "total": 10},
+        "user_102": {"completed": 0, "total": 0},
+        "user_103": {"completed": "5", "total": 10}
+    }
+    print("User Metrics:", process_user_metrics(users))
