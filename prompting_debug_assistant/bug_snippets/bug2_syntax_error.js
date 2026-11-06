@@ -1,12 +1,18 @@
-function calculateDiscount(price, discountRate) {
-    // Intended Behavior: Calculate discounted price.
-    // Issue Type: Syntax Error (missing closing parenthesis in if statement).
-    if (price <= 0 || discountRate < 0 {
-        return price;
+function calculateAverage(numbers) {
+    if (!numbers || numbers.length === 0) {
+        return 0;
     }
 
-    let finalPrice = price - (price * (discountRate / 100));
-    return finalPrice;
+    let sum = 0;
+    for (let i = 0; i < numbers.length; i++) {
+        sum += numbers[i]
+    }
+
+    // Bug: Missing closing parenthesis on console statement & syntax error in object mapping
+    console.log("Calculated total sum:", sum;
+    
+    return sum / numbers.length;
 }
 
-console.log(calculateDiscount(100, 15));
+const scores = [88, 92, 79, 95];
+console.log("Average Score:", calculateAverage(scores));
