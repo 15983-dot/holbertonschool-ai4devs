@@ -1,43 +1,38 @@
-# Bug Descriptions
+# Bug Descriptions & Intended Behavior
 
-Directory: `prompting_debug_assistant/bug_snippets/`
-
----
-
-## Bug 1 – bug1_off_by_one.py
-- **Language**: Python
-- **Intended Behavior**: Return the last `n` items of a list.
-- **Issue Type**: Off-by-one / Slice Index Logic Error.
-- **Notes**: Calculating `len(items) - n + 1` skips the first item of the requested subslice. For example, asking for the last 3 items of a 5-item list returns only 2 items.
+This document outlines the intended behavior, issue classification, and reproduction notes for each flawed code snippet inside `bug_snippets/`.
 
 ---
 
-## Bug 2 – bug2_syntax_error.js
-- **Language**: JavaScript
-- **Intended Behavior**: Calculate and return the discounted price given an initial price and percentage discount rate.
-- **Issue Type**: Syntax Error.
-- **Notes**: Missing a closing parenthesis `)` in the `if` condition line (`if (price <= 0 || discountRate < 0 {`), causing the JavaScript parser to throw a `SyntaxError: Unexpected token '{'`.
+## Bug 1 – `bug1.py`
+* **Intended Behavior**: Slice and return the last `n` items from a list of elements. If `n` equals or exceeds the list length, it should return the complete list.
+* **Issue Type**: Off-by-one / Array slicing logic error.
+* **Notes**: The formula `len(items) - n + 1` skips one element too many. When `n == len(items)`, it omits the first item instead of returning the entire list.
 
 ---
 
-## Bug 3 – bug3_runtime_exception.py
-- **Language**: Python
-- **Intended Behavior**: Iterate through a list of user profile dictionaries, aggregate their scores, and compute the average score.
-- **Issue Type**: Runtime Exception (`KeyError` & `ZeroDivisionError`).
-- **Notes**: Accessing `user['score']` directly without `.get()` throws a `KeyError` if any dictionary lacks the `'score'` key. Additionally, passing an empty list results in a `ZeroDivisionError`.
+## Bug 2 – `bug2.js`
+* **Intended Behavior**: Calculate and return the average score from an array of numbers, printing a debug log statement of the total sum.
+* **Issue Type**: Syntax error.
+* **Notes**: Line 11 contains an unclosed parenthesis (`console.log("Calculated total sum:", sum;`). The engine fails during parsing before execution.
 
 ---
 
-## Bug 4 – bug4_logic_error.js
-- **Language**: JavaScript
-- **Intended Behavior**: Filter out even integers from an array and compute their sum.
-- **Issue Type**: Logical Error.
-- **Notes**: The conditional uses `numbers[i] % 2 === 1`, which targets odd numbers instead of evens. Inside the loop, it uses assignment (`sum = numbers[i]`) instead of addition assignment (`sum += numbers[i]`), returning only the last odd number.
+## Bug 3 – `bug3.py`
+* **Intended Behavior**: Calculate the completion percentage (`completed / total * 100`) for a map of user records.
+* **Issue Type**: Runtime exception / Unhandled data type & zero-division edge cases.
+* **Notes**: Throws `ZeroDivisionError` when a user has zero total tasks (`user_102`). It also throws a `TypeError` if numeric data is passed as a string (`user_103`).
 
 ---
 
-## Bug 5 – bug5_datatype_misuse.cpp
-- **Language**: C++
-- **Intended Behavior**: Calculate the exact double-precision floating-point average of a collection of integer test scores.
-- **Issue Type**: Misuse of Data Types / Type Casting Failure.
-- **Notes**: Performing `sum / scores.size()` where both operands are integers causes implicit integer division, truncating fractional decimal parts before assigning the result to the `double` return variable.
+## Bug 4 – `bug4.cpp`
+* **Intended Behavior**: Compute the product of all integers in a vector.
+* **Issue Type**: Integer overflow & Out-of-bounds memory access.
+* **Notes**: Using a 16-bit `short` for cumulative multiplication causes rapid integer overflow. Additionally, loop bound condition `i <= numbers.size()` reads past the allocated vector boundary.
+
+---
+
+## Bug 5 – `bug5.js`
+* **Intended Behavior**: Asynchronously fetch user object profiles for a list of target IDs and return the accumulated list.
+* **Issue Type**: Logical error (Asynchronous timing & closure scope).
+* **Notes**: `fetchUserData` returns synchronously before `setTimeout` callbacks run, yielding an empty list. Furthermore, using `var i` instead of `let i` causes `userIds[i]` to evaluate `userIds[3]` (`undefined`) for all callbacks.
