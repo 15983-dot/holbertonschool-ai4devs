@@ -11,8 +11,6 @@ from typing import Any, Optional
 class LogAnalyzer:
     """Parses Apache CLF access logs and computes traffic and error statistics."""
 
-    # Standard Apache Common Log Format regex:
-    # <ip_address> - - [<timestamp>] "<method> <endpoint> <protocol>" <status_code> <bytes>
     LOG_PATTERN = re.compile(
         r'^(?P<ip>\S+)\s+\S+\s+\S+\s+\[(?P<timestamp>[^\]]+)\]\s+'
         r'"(?P<method>[A-Z]+)\s+(?P<endpoint>\S+)\s+(?P<protocol>[^"]+)"\s+'
@@ -20,15 +18,7 @@ class LogAnalyzer:
     )
 
     def parse_line(self, line: str) -> Optional[dict[str, Any]]:
-        """
-        Parse a single Apache CLF log line into structured fields.
-
-        Args:
-            line: Raw log entry string.
-
-        Returns:
-            Dictionary with extracted fields if valid, otherwise None.
-        """
+        """Parse a single Apache CLF log line into structured fields."""
         cleaned = line.strip()
         if not cleaned:
             return None
@@ -55,15 +45,7 @@ class LogAnalyzer:
         }
 
     def analyze(self, lines: list[str]) -> dict[str, Any]:
-        """
-        Analyze a sequence of raw log lines and compute aggregate statistics.
-
-        Args:
-            lines: List of raw log entry strings.
-
-        Returns:
-            Dictionary adhering to the Cross-Language Specification output schema.
-        """
+        """Analyze a sequence of raw log lines and compute aggregate statistics."""
         total_requests = 0
         unique_ips: set[str] = set()
         error_count = 0
@@ -71,7 +53,6 @@ class LogAnalyzer:
         endpoint_counts: Counter[str] = Counter()
 
         for line in lines:
-            # Blank/whitespace-only lines are ignored without counting as malformed
             if not line or not line.strip():
                 continue
 
@@ -92,7 +73,6 @@ class LogAnalyzer:
             top_endpoint = None
         else:
             error_rate = round((error_count / total_requests) * 100, 2)
-            # Sort by highest count descending, then lexicographically ascending for ties
             top_endpoint = min(
                 endpoint_counts.keys(),
                 key=lambda ep: (-endpoint_counts[ep], ep),
