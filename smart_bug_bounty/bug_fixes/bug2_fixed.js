@@ -1,24 +1,21 @@
-CustomDict = {
-    "a": ["b", "c"],
-    "b": ["a", "d", "g"], 
-    "c": ["a", "e"],
-    "d": ["b", "e", "f"],
-    "e": ["d", "f", "c"],
-    "f": ["d", "e", "g"],  
-    "g": ["b", "f"]        
+function scheduleNotifications(users) {
+    const notifications = [];
+
+    for (let i = 0; i < users.length; i++) {
+        setTimeout(function () {
+            const message = `Sending alert to ${users[i].name} (ID: ${users[i].id})`;
+            console.log(message);
+            notifications.push(message);
+        }, 100 * i);
+    }
+
+    return notifications;
 }
 
-def bfs(graph, vertex):
-    visited = []
-    queue = [vertex]  # enqueue starting vertex
+const activeUsers = [
+    { id: 101, name: "Alice" },
+    { id: 102, name: "Bob" },
+    { id: 103, name: "Charlie" }
+];
 
-    while queue:  # while queue is not empty
-        #yourcode
-        #yourcode
-
-
-
-
-
-# Test BFS traversal
-bfs(CustomDict, "a")
+scheduleNotifications(activeUsers);
